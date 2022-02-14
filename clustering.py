@@ -71,31 +71,27 @@ for method, predictions in zip(['KMeans', 'Agglomerative Clustering', 'Spectral 
 
 # Time to visualize the clusters, along with ground truth labels
 fig, ax = plt.subplots(nrows=2, ncols=4)
-ax[0, 0].title.set_text('KMeans')
-ax[0, 1].title.set_text('Agglomerative clustering (Ward)')
-ax[0, 2].title.set_text('Spectral clustering')
-ax[0, 3].title.set_text('Actual labels (ground truth)')
-ax[0, 0].scatter(X[:, 0], X[:, 1], c=kmeans_CLASS_predictions, s=10)
-ax[0, 1].scatter(X[:, 0], X[:, 1], c=agglo_CLASS_predictions, s=10)
-ax[0, 2].scatter(X[:, 0], X[:, 1], c=spectral_CLASS_predictions, s=10)
-ax[0, 3].scatter(X[:, 0], X[:, 1], c=y_CLASS, s=10)
-ax[1, 0].scatter(X[:, 0], X[:, 1], c=kmeans_NSP_predictions, s=10)
-ax[1, 1].scatter(X[:, 0], X[:, 1], c=agglo_NSP_predictions, s=10)
-ax[1, 2].scatter(X[:, 0], X[:, 1], c=spectral_NSP_predictions, s=10)
-ax[1, 3].scatter(X[:, 0], X[:, 1], c=y_NSP, s=10)
+titles = ['KMeans', 'Agglomerative clustering (Ward)', 'Spectral clustering', 'Actual labels (ground truth)']
+indices = [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3)]
+colors = [kmeans_CLASS_predictions, agglo_CLASS_predictions, spectral_CLASS_predictions, y_CLASS, kmeans_NSP_predictions,
+          agglo_NSP_predictions, spectral_NSP_predictions, y_NSP]
+for title, index in zip(titles, indices[:4]):
+    ax[index[0], index[1]].title.set_text(title)
+
+for index, color in zip(indices, colors):
+    ax[index[0], index[1]].scatter(X[:, 0], X[:, 1], c=color, s=10)
+
 plt.tight_layout()
 plt.show()
 
 # And also visualize the confusion matrices
+confusion_matrices = [kmeans_CLASS_cm, agglo_CLASS_cm, spectral_CLASS_cm, kmeans_NSP_cm, agglo_NSP_cm, spectral_NSP_cm]
+cm_indices = [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]
 fig, ax = plt.subplots(nrows=2, ncols=3)
 ax[0, 0].title.set_text('KMeans confusion matrices')
 ax[0, 1].title.set_text('Agglomerative clustering (Ward) confusion matrices')
 ax[0, 2].title.set_text('Spectral clustering confusion matrices')
-sns.heatmap(kmeans_CLASS_cm, annot=True, ax=ax[0, 0])
-sns.heatmap(agglo_CLASS_cm, annot=True, ax=ax[0, 1])
-sns.heatmap(spectral_CLASS_cm, annot=True, ax=ax[0, 2])
-sns.heatmap(kmeans_NSP_cm, annot=True, ax=ax[1, 0])
-sns.heatmap(agglo_NSP_cm, annot=True, ax=ax[1, 1])
-sns.heatmap(spectral_NSP_cm, annot=True, ax=ax[1, 2])
+for matrix, index in zip(confusion_matrices, cm_indices):
+    sns.heatmap(matrix, annot=True, ax = ax[index[0], index[1]])
 plt.tight_layout()
 plt.show()
