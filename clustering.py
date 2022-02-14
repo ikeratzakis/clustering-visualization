@@ -14,7 +14,7 @@ print(df.head)
 df = df.drop(axis=0, index=[2126, 2127, 2128])
 df = df.drop(axis=1, labels=["Unnamed: 9", "Unnamed: 31", "Unnamed: 42", "Unnamed: 44"])
 # Check for NaN values
-print(df.isnull().values.any())
+print('Checking for NaN values... ', df.isnull().values.any())
 # Looking good! Save dataframe to CSV for future usage
 df.to_csv(path_or_buf='cardio.csv')
 
